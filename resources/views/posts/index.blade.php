@@ -1,5 +1,3 @@
-<!-- resources/views/posts/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -23,4 +21,10 @@
             </li>
         @endforeach
     </ul>
+
+    <!-- Навигация -->
+    <div class="mt-3">
+        {{ $posts->links('pagination::bootstrap-5') }}
+    </div>
+
 @endsection

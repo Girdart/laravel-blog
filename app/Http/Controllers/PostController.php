@@ -11,7 +11,9 @@ class PostController extends Controller
     // список постов
     public function index()
     {
-        $posts = Post::all();
+        // Берём посты по 5 штук на страницу
+        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+
         return view('posts.index', compact('posts'));
     }
 
