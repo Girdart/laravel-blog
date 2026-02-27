@@ -1,22 +1,28 @@
 <!-- resources/views/posts/index.blade.php -->
 
-<h1> List of posts </h1>
+@extends('layouts.app')
 
-<a href="/posts/create">Create post</a>
-<ul>
-    @foreach($posts as $post)
-        <li>
-            <strong>{{ $post->title }}</strong><br>
-            {{ $post->content }}<br>
-            <a href="/posts/{{$post->id}}/edit">Edit</a>
+@section('content')
 
-            <!-- Форма для удаления -->
-            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-            </form>
-        </li>
+    <h1>Posts</h1>
 
-    @endforeach
-</ul>
+    <a href="/posts/create" class="btn btn-primary mb-3">Create Post</a>
+
+    <ul class="list-group">
+        @foreach($posts as $post)
+            <li class="list-group-item">
+                <h5>{{ $post->title }}</h5>
+                <p>{{ $post->content }}</p>
+
+                <a href="/posts/{{ $post->id }}/edit" class="btn btn-sm btn-warning">Edit</a>
+
+                <form action="/posts/{{ $post->id }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </li>
+        @endforeach
+    </ul>
+
+@endsection

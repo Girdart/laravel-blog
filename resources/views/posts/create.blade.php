@@ -1,14 +1,23 @@
-<h1> Create post </h1>
-<form method="POST" action="/posts">
-    @csrf
+@extends('layouts.app')
 
-    <label>Title</label><br>
-    <input type="text" name="title" value="{{ old('title') }}" required>
+@section('content')
 
-    <label>Content</label><br>
-    <textarea name="content" required>{{ old('content') }}</textarea>
+    <h1>Create Post</h1>
 
-    <button type="submit">Save</button>
+    <form method="POST" action="/posts">
+        @csrf
 
-</form>
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control">
+        </div>
 
+        <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea name="content" class="form-control"></textarea>
+        </div>
+
+        <button class="btn btn-success">Save</button>
+    </form>
+
+@endsection

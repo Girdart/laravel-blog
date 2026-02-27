@@ -1,14 +1,24 @@
-<h1>Edit Post</h1>
+@extends('layouts.app')
 
-<form method="POST" action="/posts/{{$post->id}}">
-    @csrf
-    @method('PUT')
+@section('content')
 
-    <label>Title</label><br>
-    <input type="text" name="title" value="{{$post->title}}"><br><br>
-    <label>Content</label><br>
-    <textarea name="content" required>{{ $post->content }}</textarea><br><br>
+    <h1>Edit Post</h1>
 
-    <button type="submit">Update</button>
+    <form method="POST" action="/posts/{{ $post->id }}">
+        @csrf
+        @method('PUT')
 
-</form>
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" value="{{ $post->title }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea name="content" class="form-control">{{ $post->content }}</textarea>
+        </div>
+
+        <button class="btn btn-primary">Update</button>
+    </form>
+
+@endsection
