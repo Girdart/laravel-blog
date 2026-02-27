@@ -71,4 +71,11 @@ class PostController extends Controller
             ->route('posts.index')
             ->with('success', 'Post deleted successfully');// Возвращаемся к списку постов
     }
+
+    // Show single post
+    public function show(Post $post)
+    {
+        // Передаём выбранный пост в view posts/show.blade.php
+        return view('posts.show', compact('post'));
+    }
 }

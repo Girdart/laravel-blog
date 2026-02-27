@@ -12,6 +12,7 @@
                 <p>{{ $post->content }}</p>
 
                 <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-info">View</a>
 
                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                     @csrf

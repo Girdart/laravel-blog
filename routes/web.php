@@ -30,3 +30,6 @@ Route::get('/', function () {
 
 // Создаём все стандартные маршруты: index, create, store, show, edit, update, destroy
 Route::resource('posts', PostController::class);
+
+// Просмотр одного поста
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
