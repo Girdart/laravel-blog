@@ -3,10 +3,9 @@
 @extends('layouts.app')
 
 @section('content')
-
     <h1>Posts</h1>
 
-    <a href="/posts/create" class="btn btn-primary mb-3">Create Post</a>
+    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create Post</a>
 
     <ul class="list-group">
         @foreach($posts as $post)
@@ -14,9 +13,9 @@
                 <h5>{{ $post->title }}</h5>
                 <p>{{ $post->content }}</p>
 
-                <a href="/posts/{{ $post->id }}/edit" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                <form action="/posts/{{ $post->id }}" method="POST" style="display:inline;">
+                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-sm btn-danger">Delete</button>
@@ -24,5 +23,4 @@
             </li>
         @endforeach
     </ul>
-
 @endsection

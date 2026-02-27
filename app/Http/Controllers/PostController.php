@@ -24,14 +24,19 @@ class PostController extends Controller
     // сохранение поста
     public function store(Request $request)
     {
+        // 1️⃣ Проверяем и валидируем данные из формы
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
 
+        // 2️⃣ Создаём запись в базе
         Post::create($data);
 
-        return redirect('/post'); // возвращаемся к списку постов
+        // 3️⃣ Редирект обратно к списку постов + flash-сообщение
+        return redirect()
+            ->route('posts.index')
+            ->with('success', 'Post created successfully');
     }
 
     // Show edit form
@@ -50,7 +55,9 @@ class PostController extends Controller
 
         $post->update($data);
 
-        return redirect('/post'); // или /posts если нужно
+        return redirect()
+            ->route('posts.index')
+            ->with('success', 'Post updated successfully');
     }
 
     // Delete post in DB
@@ -58,6 +65,8 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();// Удаляем запись из базы
-        return redirect('/post');// Возвращаемся к списку постов
+        return redirect()
+            ->route('posts.index')
+            ->with('success', 'Post deleted successfully');// Возвращаемся к списку постов
     }
 }
