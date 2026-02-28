@@ -1,35 +1,35 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Главная страница
 Route::get('/', function () {
-    return 'Hello Laravel';
+    return view('welcome');
 });
 
+// Публичные маршруты постов
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
-//// Создаём маршрут /posts, который вызывает метод index контроллера
-//// список постов
-//Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-//
-//// форма создания
-//Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-//
-//// сохранение
-//Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-//
-//// редактирование
-//Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-//
-//// обновление
-//Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-//
-//// удаление
-//Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+// Dashboard (только для авторизованных)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
+// Защищённые маршруты (только для авторизованных)
+Route::middleware('auth')->group(function () {
+    Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-// Создаём все стандартные маршруты: index, create, store, show, edit, update, destroy
-Route::resource('posts', PostController::class);
+    // Профиль пользователя
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Просмотр одного поста
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+require __DIR__ . '/auth.php';

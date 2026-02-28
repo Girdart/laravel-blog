@@ -1,31 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Posts</h1>
+    <h1 class="text-3xl font-bold mb-6">Posts</h1>
 
-    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-3">Create Post</a>
+    @foreach($posts as $post)
+        <div class="mb-4 p-4 bg-white dark:bg-gray-800 shadow rounded">
+            <h2 class="text-2xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
+                <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">
+                Автор: {{ $post->user->name ?? 'Неизвестный' }}
+            </p>
+            <small class="text-gray-500 dark:text-gray-400">
+                Опубликовано: {{ $post->created_at->format('d.m.Y H:i') }}
+            </small>
 
-    <ul class="list-group">
-        @foreach($posts as $post)
-            <li class="list-group-item">
-                <h5>{{ $post->title }}</h5>
-                <p>{{ $post->content }}</p>
+            @can('update', $post)
+                <div class="mt-2 flex space-x-2">
+                    <a href="{{ route('posts.edit', $post) }}"
+                       class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Edit</a>
+                    <form action="{{ route('posts.destroy', $post) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                    </form>
+                </div>
+            @endcan
+        </div>
+    @endforeach
 
-                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-info">View</a>
-
-                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                </form>
-            </li>
-        @endforeach
-    </ul>
-
-    <!-- Навигация -->
-    <div class="mt-3">
-        {{ $posts->links('pagination::bootstrap-5') }}
+    <div class="mt-6">
+        {{ $posts->links() }}
     </div>
-
 @endsection
