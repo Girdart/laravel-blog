@@ -9,16 +9,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Публичные маршруты постов
-Route::get('posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
-
 // Dashboard (только для авторизованных)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// Защищённые маршруты (только для авторизованных)
+// Защищённые маршруты постов (только для авторизованных)
 Route::middleware('auth')->group(function () {
     Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
@@ -31,5 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Публичные маршруты постов (просмотр списка и отдельных постов)
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 require __DIR__ . '/auth.php';
